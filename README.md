@@ -30,8 +30,8 @@ This project is a web-based AI-powered legal assistant designed to help users as
 .
 ├── static/
 │   └── justice.jpeg
-├── templates/
-│   └── law.html
+|   └── law.html
+|   └── login.html
 ├── main.py
-├── requirements.txt
+├── users.db
 └── README.md
