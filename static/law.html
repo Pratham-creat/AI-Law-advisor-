@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Law Advisor Bot</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: url("/static/justice.jpeg") no-repeat center center fixed;
+        background-size: cover;
+        padding: 40px;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+        background: rgba(255, 255, 255, 0.25);
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      textarea,
+      input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .response {
+        margin-top: 20px;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>AI Law Advisor Bot</h2>
+      <label for="question">Ask a Legal Question:</label>
+      <textarea id="question" rows="4"></textarea>
+      <button onclick="askQuestion()">Ask</button>
+
+      <label for="file">Or Upload a Legal Document (Image):</label>
+      <input type="file" id="file" />
+      <button onclick="uploadDoc()">Summarize Document</button>
+
+      <div class="response" id="response"></div>
+    </div>
+
+    <script>
+      const fallbackAnswers = {
+        eviction:
+          "If you're being evicted, landlords must typically provide 30 days' notice. You can contest the eviction in rent control courts if it's unlawful.",
+        termination:
+          "Employees terminated without cause may be entitled to notice pay or severance. Labor laws vary, but employers must comply with basic termination procedures.",
+        rent: "Rent increases are generally allowed only with prior notice (usually 30 days) and must follow state-specific rent control rules.",
+        "security deposit":
+          "Landlords must return the security deposit within 30 days of tenant vacating, minus deductions with valid proof.",
+        "notice period":
+          "Standard notice periods are usually 30 days for tenants and employees unless a contract specifies otherwise.",
+      };
+
+      async function askQuestion() {
+        const question = document.getElementById("question").value.trim();
+        const responseDiv = document.getElementById("response");
+        responseDiv.innerHTML = "Loading...";
+
+        if (!question) {
+          responseDiv.innerHTML = "Please enter a question.";
+          return;
+        }
+
+        try {
+          const res = await fetch("http://127.0.0.1:8000/ask", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question }),
+          });
+
+          if (!res.ok) throw new Error("Backend error");
+
+          const data = await res.json();
+          responseDiv.innerHTML = `<strong>Response:</strong>\n${data.answer}`;
+        } catch (error) {
+          console.warn("Backend unavailable. Using fallback.");
+          const fallback = getFallbackAnswer(question);
+          responseDiv.innerHTML = `<strong>Response:</strong>\n${fallback}`;
+        }
+      }
+
+      function getFallbackAnswer(question) {
+        const q = question.toLowerCase();
+        for (const keyword in fallbackAnswers) {
+          if (q.includes(keyword)) {
+            return fallbackAnswers[keyword];
+          }
+        }
+        return "Unable to provide a specific answer. Please consult a legal advisor or local laws.";
+      }
+    </script>
+  </body>
+</html>

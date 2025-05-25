@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AI Law Advisor - Login & Register</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: url("/static/justice.jpeg") no-repeat center center fixed; /* Replace 'your-image.jpg' with the actual image filename */
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .container {
+        background: rgba(
+          255,
+          255,
+          255,
+          0.8
+        ); /* Semi-transparent white background */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        width: 350px;
+      }
+      h2 {
+        text-align: center;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      .toggle {
+        text-align: center;
+        margin-top: 15px;
+      }
+      .toggle a {
+        color: #007bff;
+        cursor: pointer;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Login Form -->
+      <div id="login-form">
+        <h2>Login</h2>
+        <form action="/login" method="post">
+          <input
+            type="text"
+            name="username"
+            placeholder="Email or Username"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+          <button type="submit">Login</button>
+        </form>
+        <div class="toggle">
+          Don't have an account? <a onclick="toggleForms()">Register here</a>
+        </div>
+      </div>
+
+      <!-- Registration Form -->
+      <div id="register-form" style="display: none">
+        <h2>Register</h2>
+        <form action="/register" method="post">
+          <input type="text" name="username" placeholder="Full Name" required />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+          <button type="submit">Register</button>
+        </form>
+        <div class="toggle">
+          Already have an account? <a onclick="toggleForms()">Login here</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function toggleForms() {
+        const login = document.getElementById("login-form");
+        const register = document.getElementById("register-form");
+        login.style.display = login.style.display === "none" ? "block" : "none";
+        register.style.display =
+          register.style.display === "none" ? "block" : "none";
+      }
+
+      function login() {
+        alert("Login functionality coming soon...");
+      }
+
+      function register() {
+        alert("Registration functionality coming soon...");
+      }
+    </script>
+  </body>
+</html>
